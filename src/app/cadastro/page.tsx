@@ -10,6 +10,7 @@ export default function Cadastro() {
         width={200}
         height={200}
       />
+      <p className="mb-2">Crie uma conta</p>
       <CadastroForm />
     </div>
   );

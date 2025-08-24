@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { montserrat } from "./fonts";
+import CookiesWrapper from "@/components/Wrapper/CookiesWrapper";
 
 export const metadata: Metadata = {
   title: "Finnova",
@@ -15,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${montserrat.variable}`}>
-      <body className={`antialiased font-Montserrat`}>{children}</body>
+      <body className={`antialiased font-Montserrat`}>
+        <CookiesWrapper>{children}</CookiesWrapper>
+      </body>
     </html>
   );
 }

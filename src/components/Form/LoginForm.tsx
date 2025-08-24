@@ -12,6 +12,10 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import Button from "../Button/Button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
+import Link from "next/link";
 
 const formSchema = z.object({
   login: z.string().min(2).max(50),
@@ -19,6 +23,9 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies(["authToken"]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,8 +34,10 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await axios.post("/api/user/login", values);
+
+    router.push("/dashboard");
   }
 
   return (
@@ -48,7 +57,7 @@ export default function LoginForm() {
           <Button type="submit">Entrar</Button>
           <div className="flex flex-row justify-between *:text-xs">
             {/* <p>Esqueceu sua senha?</p> */}
-            <p>Criar conta</p>
+            <Link href="/cadastro">Criar conta</Link>
           </div>
         </div>
       </form>

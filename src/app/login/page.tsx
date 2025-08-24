@@ -9,6 +9,7 @@ export default function Login() {
         alt="Logo Finnova"
         width={200}
         height={200}
+        priority
       />
       <LoginForm />
     </div>

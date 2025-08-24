@@ -12,6 +12,9 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import Button from "../Button/Button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   login: z.string().min(2).max(50),
@@ -19,6 +22,8 @@ const formSchema = z.object({
 });
 
 export default function CadastroForm() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,8 +32,10 @@ export default function CadastroForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await axios.post("/api/user/cadastro", values);
+
+    router.push("/dashboard");
   }
 
   return (
@@ -44,7 +51,14 @@ export default function CadastroForm() {
           name="password"
           render={({ field }) => <FormItem placeholder="Senha" {...field} />}
         />
-        <Button type="submit">Cadastrar</Button>
+        <div className="space-y-1">
+          <Button type="submit">Cadastrar</Button>
+
+          <div className="flex flex-row justify-end *:text-xs">
+            {/* <p>Esqueceu sua senha?</p> */}
+            <Link href="/login">Voltar</Link>
+          </div>
+        </div>
       </form>
     </Form>
   );
