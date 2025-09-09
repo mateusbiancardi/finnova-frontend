@@ -18,8 +18,8 @@ import { useCookies } from "react-cookie";
 import Link from "next/link";
 
 const formSchema = z.object({
-  login: z.string().min(2).max(50),
-  password: z.string().min(6).max(30),
+  login: z.string().nonempty("Login é obrigatório").min(2).max(50),
+  password: z.string().nonempty("Senha é obrigatória").min(6).max(30),
 });
 
 export default function LoginForm() {
@@ -35,14 +35,23 @@ export default function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await axios.post("/api/user/login", values);
-
-    router.push("/dashboard");
+    try {
+      await axios.post("/api/user/login", values);
+      router.push("/dashboard");
+    } catch (error) {
+      form.setError("root", {
+        type: "manual",
+        message: "Login ou senha incorretos",
+      });
+    }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-3 max-w-[400px]"
+      >
         <FormField
           control={form.control}
           name="login"
@@ -51,8 +60,17 @@ export default function LoginForm() {
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => <FormItem placeholder="Senha" {...field} />}
+          render={({ field }) => (
+            <FormItem placeholder="Senha" type="password" {...field} />
+          )}
         />
+
+        {form.formState.errors.root && (
+          <div className="text-red-500 text-sm">
+            {form.formState.errors.root.message}
+          </div>
+        )}
+
         <div className="space-y-1">
           <Button type="submit">Entrar</Button>
           <div className="flex flex-row justify-between *:text-xs">

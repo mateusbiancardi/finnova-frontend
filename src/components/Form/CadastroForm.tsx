@@ -33,14 +33,23 @@ export default function CadastroForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await axios.post("/api/user/cadastro", values);
-
-    router.push("/dashboard");
+    try {
+      await axios.post("/api/user/cadastro", values);
+      router.push("/dashboard");
+    } catch (error) {
+      form.setError("root", {
+        type: "manual",
+        message: "Erro durante o cadastro",
+      });
+    }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-3">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-3 max-w-[400px]"
+      >
         <FormField
           control={form.control}
           name="login"
@@ -49,8 +58,16 @@ export default function CadastroForm() {
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => <FormItem placeholder="Senha" {...field} />}
+          render={({ field }) => (
+            <FormItem placeholder="Senha" type="password" {...field} />
+          )}
         />
+
+        {form.formState.errors.root && (
+          <div className="text-red-500 text-sm">
+            {form.formState.errors.root.message}
+          </div>
+        )}
         <div className="space-y-1">
           <Button type="submit">Cadastrar</Button>
 
