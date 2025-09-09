@@ -5,7 +5,7 @@ export default function Login() {
   return (
     <div className="flex flex-col px-8 justify-center items-center bg-gray min-h-screen w-full">
       <Image
-        src="/logo_finnova.svg"
+        src="/logo_finnova_verde.svg"
         alt="Logo Finnova"
         width={200}
         height={200}

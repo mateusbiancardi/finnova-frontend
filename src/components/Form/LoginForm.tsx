@@ -14,7 +14,6 @@ import { Input } from "../ui/input";
 import Button from "../Button/Button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCookies } from "react-cookie";
 import Link from "next/link";
 
 const formSchema = z.object({
@@ -24,7 +23,6 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(["authToken"]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
