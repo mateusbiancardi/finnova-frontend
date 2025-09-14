@@ -1,3 +1,5 @@
+import TransactionDialog from "@/components/Dialog/TransactionDialog";
+import TransactionDrawer from "@/components/Drawer/TransactionDrawer";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -46,7 +48,27 @@ export default function Page() {
               width={28}
               height={28}
             />
-            <Image src="/mais.svg" alt="Ícone de mais" width={28} height={28} />
+            <div className="lg:hidden">
+              <TransactionDrawer>
+                <Image
+                  src="/mais.svg"
+                  alt="Ícone de mais"
+                  width={28}
+                  height={28}
+                />
+              </TransactionDrawer>
+            </div>
+
+            <div className="hidden lg:block">
+              <TransactionDialog>
+                <Image
+                  src="/mais.svg"
+                  alt="Ícone de mais"
+                  width={28}
+                  height={28}
+                />
+              </TransactionDialog>
+            </div>
           </div>
           <div className="flex flex-col gap-2 px-6">
             {Transactions.map((transaction) => (
